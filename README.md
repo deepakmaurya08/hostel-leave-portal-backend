@@ -62,9 +62,9 @@ GRANT ALL PRIVILEGES ON DATABASE hostel_leave_db TO hostel_user;
 
 Update `src/main/resources/application.properties`:
 ```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/hostel_leave_db
-spring.datasource.username=hostel_user
-spring.datasource.password=your_password
+spring.datasource.url=jdbc:postgresql://
+spring.datasource.username=
+spring.datasource.password=
 ```
 
 ---
@@ -75,9 +75,9 @@ spring.datasource.password=your_password
 2. Create one for "Mail"
 3. Update `application.properties`:
 ```properties
-spring.mail.username=your_gmail@gmail.com
+spring.mail.username=
 spring.mail.password=xxxxxxxxxxxx
-spring.mail.from=AKGEC Hostel <your_gmail@gmail.com>
+spring.mail.from=
 ```
 
 ---
@@ -93,75 +93,6 @@ mvn clean package -DskipTests
 java -jar target/hostel-leave-portal-1.0.0.jar
 ```
 
----
-
-## Default Users (Auto-Seeded on First Start)
-
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@akgec.ac.in | Admin@1234 |
-| Warden | warden@akgec.ac.in | Warden@1234 |
-| Dean | dean@akgec.ac.in | Dean@1234 |
-| Security | security@akgec.ac.in | Security@1234 |
-
-Students register via `POST /api/auth/register/student`
-
----
-
-## API Reference
-
-### Public
-| Method | URL | Body |
-|--------|-----|------|
-| POST | `/api/auth/login` | `{email, password}` |
-| POST | `/api/auth/register/student` | student fields |
-| GET | `/api/parent/approve?token=xxx` | — |
-| GET | `/api/parent/reject?token=xxx` | — |
-
-### Student `(Bearer token)`
-| Method | URL | Notes |
-|--------|-----|-------|
-| GET | `/api/student/dashboard` | Stats |
-| POST | `/api/student/leave/apply` | Multipart form + docs |
-| GET | `/api/student/leaves` | All my leaves |
-| GET | `/api/student/leaves/{id}` | With timeline |
-| DELETE | `/api/student/leaves/{id}/cancel` | Cancel pending |
-| GET | `/api/student/leaves/{id}/download-pdf` | PDF download |
-
-### Warden
-| Method | URL | Notes |
-|--------|-----|-------|
-| GET | `/api/warden/dashboard` | — |
-| GET | `/api/warden/leaves/pending` | — |
-| POST | `/api/warden/leaves/{id}/approve` | `{remarks, workingDaysCount, wardenParentCommTime}` |
-| POST | `/api/warden/leaves/{id}/reject` | `{remarks}` |
-
-### Dean
-| Method | URL | Notes |
-|--------|-----|-------|
-| GET | `/api/dean/dashboard` | — |
-| GET | `/api/dean/leaves/pending` | — |
-| POST | `/api/dean/leaves/{id}/approve` | Triggers QR + PDF |
-| POST | `/api/dean/leaves/{id}/reject` | `{remarks}` |
-
-### Security Guard
-| Method | URL | Notes |
-|--------|-----|-------|
-| GET | `/api/security/dashboard` | — |
-| GET | `/api/security/scan?qrToken=xxx` | Verify QR |
-| POST | `/api/security/mark-exit` | `{qrToken, remarks}` |
-| POST | `/api/security/mark-entry` | `{qrToken, remarks}` |
-| GET | `/api/security/on-leave` | Currently outside |
-
-### Admin
-| Method | URL | Notes |
-|--------|-----|-------|
-| POST | `/api/admin/users` | Create staff |
-| GET | `/api/admin/users` | All users |
-| PATCH | `/api/admin/users/{id}/toggle-active` | Enable/disable |
-| PATCH | `/api/admin/users/{id}/reset-password` | `{newPassword}` |
-| GET | `/api/admin/reports/system` | System report |
-| GET | `/api/admin/audit-logs` | Audit trail |
 
 ---
 
